@@ -38,16 +38,12 @@ export default function AffiliateProductsPage() {
     fetchProducts()
   }, [])
 
+  // /admin/* 페이지가 미들웨어 Basic Auth로 보호되므로, 같은 origin의 fetch 호출은
+  // 브라우저가 자동으로 동일한 Authorization 헤더를 첨부한다. 별도 prompt 불필요.
+
   const fetchProducts = async () => {
     try {
-      // 개발 환경에서는 비밀번호 프롬프트 스킵
-      const password = process.env.NODE_ENV === 'development'
-        ? 'dksguswns2'
-        : prompt('Admin 비밀번호를 입력하세요:')
-
-      if (!password) return
-
-      const res = await fetch(`/api/admin/affiliate-products?password=${password}`)
+      const res = await fetch('/api/admin/affiliate-products')
       if (!res.ok) throw new Error('Failed to fetch')
 
       const data = await res.json()
@@ -62,13 +58,10 @@ export default function AffiliateProductsPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    const password = prompt('Admin 비밀번호를 입력하세요:')
-    if (!password) return
-
     try {
       const url = editingProduct
-        ? `/api/admin/affiliate-products/${editingProduct.id}?password=${password}`
-        : `/api/admin/affiliate-products?password=${password}`
+        ? `/api/admin/affiliate-products/${editingProduct.id}`
+        : `/api/admin/affiliate-products`
 
       const method = editingProduct ? 'PUT' : 'POST'
 
@@ -104,11 +97,8 @@ export default function AffiliateProductsPage() {
   const handleDelete = async (id: string) => {
     if (!confirm('정말 삭제하시겠습니까?')) return
 
-    const password = prompt('Admin 비밀번호를 입력하세요:')
-    if (!password) return
-
     try {
-      const res = await fetch(`/api/admin/affiliate-products/${id}?password=${password}`, {
+      const res = await fetch(`/api/admin/affiliate-products/${id}`, {
         method: 'DELETE'
       })
 
