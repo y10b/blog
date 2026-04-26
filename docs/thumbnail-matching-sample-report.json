@@ -1,0 +1,230 @@
+[
+  {
+    "post": {
+      "id": "cmgyw02s100098j239kcb6vtw",
+      "title": "SaaS No-Code Showdown: 6 Tools Compared (2024)",
+      "coverImage": "https://images.unsplash.com/photo-1519389950473-47a0431193db?q=80&w=2000",
+      "slug": "saas-no-code-showdown-6-tools-compared-2024",
+      "status": "DRAFT",
+      "tags": [
+        "SaaS 개발",
+        "노코드 도구",
+        "도구 비교",
+        "Bubble",
+        "Webflow",
+        "Framer",
+        "Claude Code"
+      ],
+      "createdAt": "2025-10-20T08:42:08.786Z"
+    },
+    "issue": "ANALYSIS_FAILED",
+    "analysis": null,
+    "error": "[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent: [400 Bad Request] Provided image is not valid."
+  },
+  {
+    "post": {
+      "id": "cmgyvyuk000088j23jrpg7osd",
+      "title": "AI 스타트업 생존법: 6년차 PM의 번아웃 방지 & 성장 가이드",
+      "coverImage": "https://images.unsplash.com/photo-1519389950473-47a04c147867?q=80&w=2000",
+      "slug": "ai-스타트업-생존법-6년차-pm의-번아웃-방지-성장-가이드",
+      "status": "DRAFT",
+      "tags": [
+        "AI 스타트업",
+        "PM 생존 가이드",
+        "번아웃",
+        "스타트업 문화",
+        "빠른 실행",
+        "트렌드 서핑",
+        "ADHD"
+      ],
+      "createdAt": "2025-10-20T08:41:11.472Z"
+    },
+    "issue": "ANALYSIS_FAILED",
+    "analysis": null,
+    "error": "[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent: [400 Bad Request] Provided image is not valid."
+  },
+  {
+    "post": {
+      "id": "cmgyvy6tl00078j236ksuk4pa",
+      "title": "쇼츠→블로그 10배 성장: PM의 크로스 플랫폼 전략",
+      "coverImage": "https://images.unsplash.com/photo-1517245386804-bb632a67a912?q=80&w=2000",
+      "slug": "쇼츠-블로그-10배-성장-pm의-크로스-플랫폼-전략",
+      "status": "DRAFT",
+      "tags": [
+        "유튜브 쇼츠",
+        "블로그 트래픽",
+        "콘텐츠 리퍼포징",
+        "SEO 전략",
+        "크로스 플랫폼"
+      ],
+      "createdAt": "2025-10-20T08:40:40.714Z"
+    },
+    "issue": "ANALYSIS_FAILED",
+    "analysis": null,
+    "error": "[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent: [400 Bad Request] Provided image is not valid."
+  },
+  {
+    "post": {
+      "id": "cmgyvxabk00068j23eruad23w",
+      "title": "제품 성장 0→1: PM의 99일 PMF 플레이북",
+      "coverImage": "https://images.unsplash.com/photo-1554224155-139659e40201?q=80&w=2000",
+      "slug": "제품-성장-0-1-pm의-99일-pmf-플레이북",
+      "status": "DRAFT",
+      "tags": [
+        "제품 성장",
+        "PMF",
+        "그로스 해킹",
+        "초기 유저",
+        "스타트업 전략",
+        "PM 플레이북"
+      ],
+      "createdAt": "2025-10-20T08:39:58.593Z"
+    },
+    "issue": "ANALYSIS_FAILED",
+    "analysis": null,
+    "error": "[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent: [400 Bad Request] Provided image is not valid."
+  },
+  {
+    "post": {
+      "id": "cmgyvwam200058j23mh2iuxds",
+      "title": "AI PM: 프롬프트 리뷰어가 된 6년차 PM의 생존기",
+      "coverImage": "https://images.unsplash.com/photo-1519389950473-47a04ea45dd0?q=80&w=2000",
+      "slug": "ai-pm-프롬프트-리뷰어가-된-6년차-pm의-생존기",
+      "status": "DRAFT",
+      "tags": [
+        "AI PM",
+        "제품 관리 미래",
+        "프롬프트 엔지니어링",
+        "AI 도구",
+        "PM 스킬",
+        "미래 역량"
+      ],
+      "createdAt": "2025-10-20T08:39:12.314Z"
+    },
+    "issue": "ANALYSIS_FAILED",
+    "analysis": null,
+    "error": "[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent: [400 Bad Request] Provided image is not valid."
+  },
+  {
+    "post": {
+      "id": "cmgyvvl6t00048j23btajpifn",
+      "title": "2주 만에 MVP 출시? AI 도구 풀스택 실전기",
+      "coverImage": "https://images.unsplash.com/photo-1519389950473-47a0277814e7?q=80&w=2000",
+      "slug": "2주-만에-mvp-출시-ai-도구-풀스택-실전기",
+      "status": "DRAFT",
+      "tags": [
+        "MVP 개발",
+        "빠른 출시",
+        "AI 도구",
+        "노코드",
+        "Vercel",
+        "Supabase",
+        "제품 개발"
+      ],
+      "createdAt": "2025-10-20T08:38:39.365Z"
+    },
+    "issue": "ANALYSIS_FAILED",
+    "analysis": null,
+    "error": "[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent: [400 Bad Request] Provided image is not valid."
+  },
+  {
+    "post": {
+      "id": "cmgyvuu1t00038j232w1eukqw",
+      "title": "디자이너에서 PM으로: 코드 없이 제품 만들기",
+      "coverImage": "https://images.unsplash.com/photo-1517245386804-bb43f76a33a5?q=80&w=2000",
+      "slug": "디자이너에서-pm으로-코드-없이-제품-만들기",
+      "status": "DRAFT",
+      "tags": [
+        "디자이너 PM 전환",
+        "커리어 전환",
+        "노코드 개발",
+        "AI 도구",
+        "제품 관리",
+        "UX PM",
+        "커리어"
+      ],
+      "createdAt": "2025-10-20T08:38:04.193Z"
+    },
+    "issue": "ANALYSIS_FAILED",
+    "analysis": null,
+    "error": "[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent: [400 Bad Request] Provided image is not valid."
+  },
+  {
+    "post": {
+      "id": "cmgyv48g100008j23srb75qhu",
+      "title": "2주 만에 애드센스 승인: Claude Code 노코드 블로그 성공기",
+      "coverImage": "https://images.unsplash.com/photo-1587620962725-ead375020987?q=80&w=2000",
+      "slug": "2주-만에-애드센스-승인-claude-code-노코드-블로그-성공기",
+      "status": "DRAFT",
+      "tags": [
+        "Claude Code",
+        "애드센스 승인",
+        "노코드 블로그",
+        "AI 도구",
+        "블로그 수익화",
+        "SEO 최적화",
+        "Next.js"
+      ],
+      "createdAt": "2025-10-20T08:17:23.138Z"
+    },
+    "issue": "ANALYSIS_FAILED",
+    "analysis": null,
+    "error": "[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent: [400 Bad Request] Provided image is not valid."
+  },
+  {
+    "post": {
+      "id": "cmgyir3vo001al704k2uh4q6t",
+      "title": "👇팀을 비범한 '어벤져스'로 만드는 구체적인 방법",
+      "coverImage": "https://i.ytimg.com/vi/Z1T-mKiIFvs/maxresdefault.jpg",
+      "slug": "yt-z1t-mkiifvs-1760927475094",
+      "status": "PUBLISHED",
+      "tags": [
+        "PM"
+      ],
+      "createdAt": "2025-10-20T02:31:15.300Z"
+    },
+    "issue": null,
+    "analysis": {
+      "extractedText": "콜잇AI, 강력한 기, Vision, 명확한 방향성과 제품의 미래상, 리더십의 부재는 팀의 성공을, 이 중 하나라도 놓친다면, 팀, 강력한 제품 리더십의 4가지 책임, 핵심적인 책임을 져야 합니다, 가지 책임, Evangelism, 비전 전파와 이해관계자 설득, 가지 책임을 모두 수행하는 강력한 리더십을 갖추고 있습니다.",
+      "visualElements": [
+        "아이콘 (눈, 사람, 깃발, 확성기)",
+        "막대 그래프 형태의 시각적 요소",
+        "화살표"
+      ],
+      "matchingScore": 7,
+      "matchingIssues": [
+        "'어벤져스'라는 비유를 시각적으로 나타내지 못함",
+        "이미지가 제품 리더십의 4가지 책임을 설명하고 있지만, 팀 전체를 '어벤져스'로 만드는 방법에 대한 직접적인 연관성이 약함"
+      ],
+      "suggestedTopic": "제품 리더십의 4가지 핵심 책임 (Vision, Team Structure, Strategy, Evangelism)"
+    }
+  },
+  {
+    "post": {
+      "id": "cmgyir2as0019l70432muy9dk",
+      "title": "AI 판사가 당신에게 유죄를 선고한다면?",
+      "coverImage": "https://i.ytimg.com/vi/0rrP-pcscYk/maxresdefault.jpg",
+      "slug": "yt-0rrp-pcscyk-1760927473089",
+      "status": "PUBLISHED",
+      "tags": [
+        "AI",
+        "AI",
+        "AI"
+      ],
+      "createdAt": "2025-10-20T02:31:13.252Z"
+    },
+    "issue": null,
+    "analysis": {
+      "extractedText": "AI Mastery\n법정에 선 AI\n법의 영역에도 AI의 파도가 밀려오고 있습니다.\n인간만의 영역이라 여겼던 법정이\n이제는 새로운 변화의 중심에 서 있습니다.\n누가 진정한 정의를 구현할 것인가?\n이것은 단순한 기술 문제를 넘어선 근본적 질문입니다.\n콜잇 AI\nOBJECTION, YOUR HONOR\nAI 라는 거대한 쓰나미 가\nyoutube.com/@coleitai",
+      "visualElements": [
+        "저울 (법률 관련)",
+        "사람 캐릭터 (AI 관련)",
+        "뇌 이미지",
+        "화살표"
+      ],
+      "matchingScore": 8,
+      "matchingIssues": [],
+      "suggestedTopic": "AI와 법의 미래, AI가 법률 시스템에 미치는 영향"
+    }
+  }
+]

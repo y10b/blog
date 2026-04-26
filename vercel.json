@@ -1,0 +1,19 @@
+{
+  "buildCommand": "prisma generate && next build && next-sitemap",
+  "outputDirectory": ".next",
+  "framework": "nextjs",
+  "installCommand": "pnpm install",
+  "env": {
+    "NEXT_PUBLIC_NODE_ENV": "production"
+  },
+  "crons": [
+    {
+      "path": "/api/publish-posts",
+      "schedule": "0 3 * * *"
+    },
+    {
+      "path": "/api/generate-daily-posts",
+      "schedule": "0 2 * * *"
+    }
+  ]
+}

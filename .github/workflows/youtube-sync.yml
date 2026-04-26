@@ -1,0 +1,35 @@
+name: YouTube Auto Sync
+
+on:
+  # 자동 스케줄은 비활성화 — YouTube 채널 운영 시작하면 schedule 블록 다시 활성화.
+  # schedule:
+  #   - cron: '0 10 * * *'  # 매일 오전 10시 UTC (한국 시간 오후 7시)
+  workflow_dispatch: # 수동 실행만 가능
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Call YouTube Sync API
+        run: |
+          echo "🚀 Calling YouTube sync API..."
+
+          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST \
+            "${{ secrets.SITE_URL }}/api/cron/youtube-sync" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            -H "Content-Type: application/json")
+
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+
+          echo "Response: $BODY"
+
+          if [ "$HTTP_CODE" -eq 200 ]; then
+            echo "✅ Successfully synced YouTube videos"
+            exit 0
+          else
+            echo "❌ Failed to sync YouTube videos (HTTP $HTTP_CODE)"
+            exit 1
+          fi

@@ -1,0 +1,31 @@
+name: Daily Translation Batch
+
+on:
+  schedule:
+    # Run every day at 9:00 AM UTC (6:00 PM KST)
+    - cron: '0 9 * * *'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  translate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger translation API
+        run: |
+          response=$(curl -s -w "\n%{http_code}" -X POST \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            "${{ secrets.SITE_URL }}/api/translate-daily")
+
+          http_code=$(echo "$response" | tail -n1)
+          body=$(echo "$response" | sed '$d')
+
+          echo "HTTP Status: $http_code"
+          echo "Response: $body"
+
+          if [ "$http_code" != "200" ]; then
+            echo "❌ Translation failed with status $http_code"
+            exit 1
+          fi
+
+          echo "✅ Translation batch completed"
+          echo "$body" | jq '.'
