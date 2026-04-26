@@ -345,7 +345,7 @@ function ProjectEn({ title, role, tags, summary, metrics }: {
 function SkillRowKo({ label, items }: { label: string; items: string[] }) {
   return (
     <div className="flex flex-col sm:flex-row sm:items-baseline gap-2">
-      <div className="text-xs font-semibold text-stone-400 tracking-wider uppercase sm:w-28 sm:flex-shrink-0">{label}</div>
+      <div className="text-xs font-semibold text-stone-500 tracking-wider uppercase sm:w-28 sm:flex-shrink-0">{label}</div>
       <div className="flex flex-wrap gap-1.5">
         {items.map(item => (
           <span key={item} className="inline-flex items-center px-2.5 py-1 rounded-md text-xs bg-stone-100 text-stone-700">{item}</span>
@@ -358,7 +358,7 @@ function SkillRowKo({ label, items }: { label: string; items: string[] }) {
 function SkillRowEn({ label, items }: { label: string; items: string[] }) {
   return (
     <div className="flex flex-col sm:flex-row sm:items-baseline gap-2">
-      <div className="text-xs font-semibold text-stone-400 tracking-wider uppercase sm:w-28 sm:flex-shrink-0">{label}</div>
+      <div className="text-xs font-semibold text-stone-500 tracking-wider uppercase sm:w-28 sm:flex-shrink-0">{label}</div>
       <div className="flex flex-wrap gap-1.5">
         {items.map(item => (
           <span key={item} className="inline-flex items-center px-2.5 py-1 rounded-md text-xs bg-stone-100 text-stone-700">{item}</span>

@@ -252,7 +252,7 @@ export default async function HomePage({
             <div className="text-[10px] font-semibold tracking-[0.2em] text-amber-700 mb-2">
               CATEGORY
             </div>
-            <h3 className="text-lg font-bold mb-2">{cat.dev.label}</h3>
+            <h2 className="text-lg font-bold mb-2">{cat.dev.label}</h2>
             <p className="text-sm text-stone-600 leading-relaxed mb-3">{cat.dev.desc}</p>
             <span className="text-sm font-medium text-stone-700 group-hover:text-amber-700 transition-colors">
               {t.seeAll} →
@@ -266,7 +266,7 @@ export default async function HomePage({
             <div className="text-[10px] font-semibold tracking-[0.2em] text-amber-700 mb-2">
               CATEGORY
             </div>
-            <h3 className="text-lg font-bold mb-2">{cat.side.label}</h3>
+            <h2 className="text-lg font-bold mb-2">{cat.side.label}</h2>
             <p className="text-sm text-stone-600 leading-relaxed mb-3">{cat.side.desc}</p>
             <span className="text-sm font-medium text-stone-700 group-hover:text-amber-700 transition-colors">
               {t.seeAll} →
@@ -444,7 +444,7 @@ export default async function HomePage({
               </p>
             </div>
             <div>
-              <h4 className="text-[10px] font-semibold text-stone-400 tracking-[0.2em] mb-3">EXPLORE</h4>
+              <h4 className="text-[10px] font-semibold text-stone-500 tracking-[0.2em] mb-3">EXPLORE</h4>
               <ul className="space-y-1.5 text-sm">
                 <li><Link href={`/${locale}/about`} className="text-stone-600 hover:text-stone-900">{t.about}</Link></li>
                 <li><Link href={`/${locale}/posts`} className="text-stone-600 hover:text-stone-900">{t.posts}</Link></li>
@@ -452,14 +452,14 @@ export default async function HomePage({
               </ul>
             </div>
             <div>
-              <h4 className="text-[10px] font-semibold text-stone-400 tracking-[0.2em] mb-3">CATEGORIES</h4>
+              <h4 className="text-[10px] font-semibold text-stone-500 tracking-[0.2em] mb-3">CATEGORIES</h4>
               <ul className="space-y-1.5 text-sm">
                 <li><Link href={`/${locale}/posts?category=dev`} className="text-stone-600 hover:text-amber-700">{cat.dev.label}</Link></li>
                 <li><Link href={`/${locale}/posts?category=sidehustle`} className="text-stone-600 hover:text-amber-700">{cat.side.label}</Link></li>
               </ul>
             </div>
             <div>
-              <h4 className="text-[10px] font-semibold text-stone-400 tracking-[0.2em] mb-3">MORE</h4>
+              <h4 className="text-[10px] font-semibold text-stone-500 tracking-[0.2em] mb-3">MORE</h4>
               <ul className="space-y-1.5 text-sm">
                 <li><Link href={`/${locale}/sitemap`} className="text-stone-600 hover:text-stone-900">{t.sitemap}</Link></li>
                 <li><Link href={`/${locale}/privacy`} className="text-stone-600 hover:text-stone-900">{t.privacy}</Link></li>
