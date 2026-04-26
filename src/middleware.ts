@@ -79,28 +79,34 @@ export async function middleware(request: NextRequest) {
     
     if (request.nextUrl.pathname.startsWith('/admin')) {
       const authHeader = request.headers.get('authorization')
-      
+
+      // 401 응답 헤더: Vary로 인증 헤더별 캐싱 분리 + no-store로 CDN 캐시 막음
+      const challengeHeaders = {
+        'WWW-Authenticate': 'Basic realm="Admin Area"',
+        'Cache-Control': 'no-store, must-revalidate',
+        'Vary': 'Authorization',
+      } as const
+
       if (!authHeader || !authHeader.startsWith('Basic ')) {
         return new NextResponse('Authentication required', {
           status: 401,
-          headers: {
-            'WWW-Authenticate': 'Basic realm="Admin Area"'
-          }
+          headers: challengeHeaders,
         })
       }
-      
+
       const base64Credentials = authHeader.split(' ')[1]
-      const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii')
-      const [username, password] = credentials.split(':')
-      
+      // ascii 디코딩은 한글/특수문자 비밀번호 깨짐 → utf-8로
+      const credentials = Buffer.from(base64Credentials, 'base64').toString('utf8')
+      const colonIdx = credentials.indexOf(':')
+      const username = colonIdx > 0 ? credentials.slice(0, colonIdx) : ''
+      const password = colonIdx > 0 ? credentials.slice(colonIdx + 1) : ''
+
       const adminPassword = process.env.ADMIN_PASSWORD || 'admin123'
-      
+
       if (username !== 'admin' || password !== adminPassword) {
         return new NextResponse('Invalid credentials', {
           status: 401,
-          headers: {
-            'WWW-Authenticate': 'Basic realm="Admin Area"'
-          }
+          headers: challengeHeaders,
         })
       }
     }
