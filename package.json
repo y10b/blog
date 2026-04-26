@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build && next-sitemap",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
@@ -40,7 +40,6 @@
     "date-fns": "^4.1.0",
     "googleapis": "^159.0.0",
     "next": "15.5.15",
-    "next-sitemap": "^4.2.3",
     "pgvector": "^0.2.1",
     "prisma": "^6.12.0",
     "prismjs": "^1.30.0",
