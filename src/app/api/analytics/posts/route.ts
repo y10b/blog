@@ -1,16 +1,12 @@
 export const dynamic = "force-dynamic"
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { cookies } from 'next/headers'
+import { verifyAdminAuth } from '@/lib/auth'
 import { tagsToArray } from '@/lib/utils/tags'
 
 export async function GET(request: NextRequest) {
   try {
-    // Simple auth check - you should implement proper authentication
-    const cookieStore = await cookies()
-    const adminSession = cookieStore.get('admin-session')
-    
-    if (!adminSession) {
+    if (!verifyAdminAuth(request)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 

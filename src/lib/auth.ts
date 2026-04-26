@@ -8,30 +8,47 @@ import { env } from './env';
 /**
  * Admin API 요청 인증
  *
- * 사용법:
- * - Authorization: Bearer {ADMIN_PASSWORD}
- * - 또는 ?password={ADMIN_PASSWORD} query parameter
+ * 지원하는 형식 (3가지 모두 동일한 ADMIN_PASSWORD와 비교):
+ *  1. `Authorization: Basic base64(admin:{ADMIN_PASSWORD})` — admin UI에서 fetch 호출 시 자동 전송
+ *  2. `Authorization: Bearer {ADMIN_PASSWORD}` — 외부 스크립트/CLI에서 호출 시
+ *  3. `?password={ADMIN_PASSWORD}` query parameter — 브라우저 수동 테스트용
+ *
+ * Default 비밀번호: 'admin123' (env 미설정 시 미들웨어와 동일하게 fallback)
  */
 export function verifyAdminAuth(request: NextRequest): boolean {
-  const adminPassword = env.ADMIN_PASSWORD;
+  const adminPassword = env.ADMIN_PASSWORD || 'admin123';
 
-  if (!adminPassword) {
-    console.error('⚠️  ADMIN_PASSWORD not configured');
-    return false;
-  }
-
-  // 1. Authorization header 체크
   const authHeader = request.headers.get('authorization');
   if (authHeader) {
-    const token = authHeader.replace('Bearer ', '');
-    if (token === adminPassword) {
-      return true;
+    // Basic Auth (브라우저 admin UI 인증 후 자동 전송)
+    if (authHeader.startsWith('Basic ')) {
+      const base64 = authHeader.slice(6);
+      try {
+        const decoded = Buffer.from(base64, 'base64').toString('utf8');
+        const colonIdx = decoded.indexOf(':');
+        if (colonIdx > 0) {
+          const username = decoded.slice(0, colonIdx);
+          const password = decoded.slice(colonIdx + 1);
+          if (username === 'admin' && password === adminPassword) {
+            return true;
+          }
+        }
+      } catch {
+        // 디코딩 실패 → 다음 방식으로 fallthrough
+      }
+    }
+
+    // Bearer token (스크립트/CLI 사용)
+    if (authHeader.startsWith('Bearer ')) {
+      const token = authHeader.slice(7);
+      if (token === adminPassword) {
+        return true;
+      }
     }
   }
 
-  // 2. Query parameter 체크 (브라우저에서 쉽게 테스트용)
-  const searchParams = request.nextUrl.searchParams;
-  const passwordParam = searchParams.get('password');
+  // Query parameter (수동 테스트용)
+  const passwordParam = request.nextUrl.searchParams.get('password');
   if (passwordParam === adminPassword) {
     return true;
   }
