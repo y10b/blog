@@ -12,7 +12,7 @@ export const siteConfig = {
   shortName: 'n잡러 프리랜서',
 
   /** 프로덕션 URL (trailing slash 없이). canonical, sitemap, robots 등에 사용 */
-  url: (process.env.NEXT_PUBLIC_SITE_URL || 'https://intalk-blog.vercel.app').trim(),
+  url: (process.env.NEXT_PUBLIC_SITE_URL || 'https://blog-coral-two-35.vercel.app').trim(),
 
   /** 기본 로케일 */
   defaultLocale: 'ko' as const,
@@ -72,13 +72,14 @@ export const siteConfig = {
 
   /** 검색엔진 사이트 인증 코드 (빈 문자열이면 meta 태그 렌더링 안 함) */
   verification: {
-    google: '',
-    naver: '',
+    google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION || '',
+    naver: process.env.NEXT_PUBLIC_NAVER_VERIFICATION || '',
   },
 
   /** 분석 도구 ID (빈 문자열이면 스크립트 로딩 안 함) */
   analytics: {
-    gaId: '',
+    /** GA4 측정 ID (`G-XXXXXXXXXX`). https://analytics.google.com/ → 관리 → 데이터 스트림. */
+    gaId: process.env.NEXT_PUBLIC_GA_ID || '',
     /**
      * Google AdSense Publisher ID. `ca-pub-XXXXXXXXXXXXXXXX` 형식.
      * AdSense 승인을 받은 뒤 https://www.google.com/adsense → 계정 → 정보에서 확인.

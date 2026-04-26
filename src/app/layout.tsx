@@ -86,7 +86,17 @@ export const metadata: Metadata = {
     languages: Object.fromEntries(
       siteConfig.locales.map(locale => [locale, `/${locale}`])
     ),
-  }
+  },
+  ...(siteConfig.verification.google || siteConfig.verification.naver
+    ? {
+        verification: {
+          ...(siteConfig.verification.google ? { google: siteConfig.verification.google } : {}),
+          ...(siteConfig.verification.naver
+            ? { other: { 'naver-site-verification': siteConfig.verification.naver } }
+            : {}),
+        },
+      }
+    : {}),
 };
 
 export default function RootLayout({
@@ -119,11 +129,21 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/icon" sizes="any" />
         <link rel="apple-touch-icon" href="/apple-icon" />
-        
+
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
-        
+
+        {siteConfig.analytics.adsenseClientId && (
+          <Script
+            id="google-adsense"
+            async
+            strategy="beforeInteractive"
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${siteConfig.analytics.adsenseClientId}`}
+            crossOrigin="anonymous"
+          />
+        )}
+
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -132,15 +152,6 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {siteConfig.analytics.adsenseClientId && (
-          <Script
-            id="google-adsense"
-            async
-            strategy="afterInteractive"
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${siteConfig.analytics.adsenseClientId}`}
-            crossOrigin="anonymous"
-          />
-        )}
         {siteConfig.analytics.gaId && <GoogleAnalytics />}
         {featuresConfig.serviceWorker && <ServiceWorkerRegistration />}
         {children}
