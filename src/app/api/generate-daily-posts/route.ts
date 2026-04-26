@@ -86,22 +86,14 @@ async function generateTopicIdeas(anthropic: Anthropic): Promise<CategorizedTopi
 - 개발 사이드 프로젝트로 수익 만들기
 
 요구사항:
-- DEV 카테고리 6개 + SIDE 카테고리 4개, 총 10개
+- DEV 카테고리 1개 + SIDE 카테고리 1개, 총 2개
 - 각 주제는 15~30자 한국어 제목
 - 클릭 유도형 (단, 과장 금지)
 - 운영자가 실제로 경험할 수 있는 구체적 주제만 (수치/모델 버전/실험 결과 포함되도록)
 - 출력 형식 정확히 지키기. 한 줄에 하나씩, 다른 설명 없이:
 
 DEV: [주제1]
-DEV: [주제2]
-DEV: [주제3]
-DEV: [주제4]
-DEV: [주제5]
-DEV: [주제6]
-SIDE: [주제7]
-SIDE: [주제8]
-SIDE: [주제9]
-SIDE: [주제10]`
+SIDE: [주제2]`
     }],
   });
 
