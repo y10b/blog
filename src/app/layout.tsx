@@ -8,7 +8,6 @@ import "@fontsource/pretendard/600.css";
 import "@fontsource/pretendard/700.css";
 import "@fontsource/pretendard/800.css";
 import "./globals.css";
-import { GoogleAnalytics } from '@/components/GoogleAnalytics';
 import ServiceWorkerRegistration from '@/components/ServiceWorkerRegistration';
 import AdBlockerNotice from '@/components/AdBlockerNotice';
 import { siteConfig, brandConfig, featuresConfig } from '@/config';
@@ -138,6 +137,24 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
 
+        {/* Google Analytics 4 — Google이 제공한 표준 gtag.js 스니펫 그대로 head에 삽입. */}
+        {siteConfig.analytics.gaId && (
+          <>
+            <script
+              async
+              src={`https://www.googletagmanager.com/gtag/js?id=${siteConfig.analytics.gaId}`}
+            />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${siteConfig.analytics.gaId}');`,
+              }}
+            />
+          </>
+        )}
+
         {/* AdSense 스크립트는 head 마지막에 — adsbygoogle.js가 로드 후 자기 자식 스크립트를 head에 주입하기 때문에, React가 추적하는 형제 요소를 displacing하지 않도록 마지막 위치를 유지한다. */}
         {siteConfig.analytics.adsenseClientId && (
           <script
@@ -150,7 +167,6 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {siteConfig.analytics.gaId && <GoogleAnalytics />}
         {featuresConfig.serviceWorker && <ServiceWorkerRegistration />}
         {children}
         {featuresConfig.adBlockerNotice && <AdBlockerNotice />}

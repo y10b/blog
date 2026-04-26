@@ -79,7 +79,7 @@ export const siteConfig = {
   /** 분석 도구 ID (빈 문자열이면 스크립트 로딩 안 함) */
   analytics: {
     /** GA4 측정 ID (`G-XXXXXXXXXX`). https://analytics.google.com/ → 관리 → 데이터 스트림. */
-    gaId: process.env.NEXT_PUBLIC_GA_ID || '',
+    gaId: 'G-RMB9JY46PM',
     /**
      * Google AdSense Publisher ID. `ca-pub-XXXXXXXXXXXXXXXX` 형식.
      * AdSense 승인을 받은 뒤 https://www.google.com/adsense → 계정 → 정보에서 확인.
