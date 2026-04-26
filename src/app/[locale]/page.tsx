@@ -26,9 +26,6 @@ export async function generateMetadata({
         'x-default': `/${siteConfig.defaultLocale}`,
       },
     },
-    ...(siteConfig.verification.naver
-      ? { other: { 'naver-site-verification': siteConfig.verification.naver } }
-      : {}),
   }
 }
 
