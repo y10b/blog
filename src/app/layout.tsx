@@ -1,7 +1,6 @@
 // PERF-CRITICAL: Do NOT add preconnect links (use dns-prefetch only).
 // Do NOT wrap GA/SW/AdBlocker in dynamic() - causes TBT spike from chunk loading.
 import type { Metadata } from "next";
-import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
 import "@fontsource/pretendard/400.css";
 import "@fontsource/pretendard/500.css";
@@ -134,20 +133,19 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
 
-        {siteConfig.analytics.adsenseClientId && (
-          <Script
-            id="google-adsense"
-            async
-            strategy="beforeInteractive"
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${siteConfig.analytics.adsenseClientId}`}
-            crossOrigin="anonymous"
-          />
-        )}
-
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+
+        {/* AdSense 스크립트는 head 마지막에 — adsbygoogle.js가 로드 후 자기 자식 스크립트를 head에 주입하기 때문에, React가 추적하는 형제 요소를 displacing하지 않도록 마지막 위치를 유지한다. */}
+        {siteConfig.analytics.adsenseClientId && (
+          <script
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${siteConfig.analytics.adsenseClientId}`}
+            crossOrigin="anonymous"
+          />
+        )}
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
