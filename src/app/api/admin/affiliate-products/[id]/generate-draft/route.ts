@@ -16,6 +16,63 @@ interface DraftJson {
 }
 
 /**
+ * 클릭 가능한 쿠팡 파트너스 배너 HTML.
+ *
+ * MarkdownContent 컴포넌트가 rehype-raw를 켜둔 덕에 본문에 raw HTML을 그대로 넣으면 렌더링됨.
+ * Tailwind 클래스는 prose 안에서 일관되게 적용되지 않을 수 있어 inline style 사용.
+ */
+function buildAffiliateBanner(opts: {
+  name: string
+  imageUrl: string | null
+  coupangUrl: string
+  price?: number | null
+}): string {
+  const { name, imageUrl, coupangUrl, price } = opts
+  const safeName = name.replace(/"/g, '&quot;')
+  const priceLine =
+    typeof price === 'number' && price > 0
+      ? `<div style="font-size:0.875rem;color:#57534e;margin-top:0.25rem;">₩${price.toLocaleString()}</div>`
+      : ''
+  const img = imageUrl
+    ? `<img src="${imageUrl}" alt="${safeName}" style="width:120px;height:120px;object-fit:cover;border-radius:0.5rem;flex-shrink:0;" loading="lazy" />`
+    : ''
+  return `<a href="${coupangUrl}" target="_blank" rel="noopener noreferrer sponsored" style="display:flex;align-items:center;gap:1rem;padding:1rem;margin:1.5rem 0;border:1px solid #e7e5e4;border-radius:0.75rem;background:#fafaf9;text-decoration:none;color:inherit;line-height:1.4;">
+  ${img}
+  <div style="flex:1;min-width:0;">
+    <div style="font-size:0.7rem;font-weight:600;color:#b45309;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:0.25rem;">쿠팡 파트너스</div>
+    <div style="font-weight:600;color:#1c1917;font-size:1rem;">${safeName}</div>
+    ${priceLine}
+  </div>
+  <span style="flex-shrink:0;padding:0.5rem 0.875rem;background:#1c1917;color:white;font-size:0.875rem;font-weight:500;border-radius:0.375rem;white-space:nowrap;">쿠팡에서 보기 →</span>
+</a>`
+}
+
+/**
+ * 본문의 첫 H2 직전에 배너를 삽입. H2가 없으면 첫 빈 줄 뒤(도입부 끝)에 삽입.
+ * 이미 본문에 배너 HTML이 있으면(미래 확장 대비) 중복 삽입 안 함.
+ */
+function insertBannerAfterIntro(content: string, bannerHtml: string): string {
+  if (content.includes(bannerHtml)) return content
+
+  // 첫 ## 헤더 찾기
+  const h2Match = content.match(/^##\s/m)
+  if (h2Match && h2Match.index !== undefined) {
+    return content.slice(0, h2Match.index) + bannerHtml + '\n\n' + content.slice(h2Match.index)
+  }
+
+  // 첫 빈 줄 뒤에 삽입
+  const blankLineIdx = content.indexOf('\n\n')
+  if (blankLineIdx !== -1) {
+    return (
+      content.slice(0, blankLineIdx + 2) + bannerHtml + '\n\n' + content.slice(blankLineIdx + 2)
+    )
+  }
+
+  // fallback: 맨 앞
+  return bannerHtml + '\n\n' + content
+}
+
+/**
  * POST /api/admin/affiliate-products/[id]/generate-draft
  *
  * 등록된 쿠팡 상품을 받아 Claude로 블로그 카테고리 판단 + 초안 글 작성을 한 번에 진행.
@@ -136,12 +193,21 @@ ${product.description ? `- 설명: ${product.description}` : ''}
     rawTags[0] === blogCategory ? rawTags : [blogCategory, ...rawTags.filter(t => t !== blogCategory)]
   const tagsStr = tagsArr.join(',')
 
-  // 본문에 affiliate placeholder를 실제 쿠팡 URL로 치환
+  // 본문에 affiliate placeholder를 실제 쿠팡 URL로 치환 (텍스트 멘션도 클릭 가능하게)
   const contentWithLink = parsed.content.replace(/AFFILIATE_LINK_PLACEHOLDER/g, product.coupangUrl)
+
+  // 클릭 가능한 이미지 배너를 도입부 뒤에 삽입 (이미지 + 상품명 + CTA)
+  const bannerHtml = buildAffiliateBanner({
+    name: product.name,
+    imageUrl: product.imageUrl,
+    coupangUrl: product.coupangUrl,
+    price: product.price,
+  })
+  const contentWithBanner = insertBannerAfterIntro(contentWithLink, bannerHtml)
 
   // 법적 고지 footer (쿠팡 파트너스 + 공정거래위 추천·보증 심사지침)
   const disclaimer = '\n\n---\n\n*이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.*'
-  const finalContent = contentWithLink + disclaimer
+  const finalContent = contentWithBanner + disclaimer
 
   // slug 충돌 방지 — timestamp suffix
   const baseSlug = (parsed.slug || product.name)
