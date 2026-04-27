@@ -34,6 +34,7 @@ export async function GET(request: NextRequest) {
         views: true,
         youtubeVideoId: true,
         originalLanguage: true,
+        tags: true,
         translations: {
           select: {
             locale: true,

@@ -19,7 +19,16 @@ interface Post {
   coverImage: string | null
   youtubeVideoId: string | null
   originalLanguage?: string
+  tags?: string
   translations?: Translation[]
+}
+
+// post.tags 첫 단어가 카테고리 식별자. 두 티스토리 블로그에 어떤 글이 어울리는지 라벨 매핑.
+function getBlogLabel(tags: string | undefined) {
+  const first = (tags ?? '').split(',')[0]?.trim().toLowerCase()
+  if (first === 'dev') return { code: 'dev', label: '개발막차', cls: 'bg-blue-50 text-blue-700 ring-blue-600/20' }
+  if (first === 'sidehustle') return { code: 'sidehustle', label: 'n잡러', cls: 'bg-amber-50 text-amber-700 ring-amber-600/20' }
+  return { code: 'unknown', label: '미분류', cls: 'bg-gray-50 text-gray-600 ring-gray-400/20' }
 }
 
 interface AdminPostsTableProps {
@@ -34,6 +43,7 @@ export function AdminPostsTable({ posts: initialPosts }: AdminPostsTableProps) {
   const [deletingPostId, setDeletingPostId] = useState<string | null>(null)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null)
   const [categoryFilter, setCategoryFilter] = useState<'all' | 'manual' | 'youtube'>('all')
+  const [blogFilter, setBlogFilter] = useState<'all' | 'dev' | 'sidehustle' | 'unknown'>('all')
   const [languageFilter, setLanguageFilter] = useState<'all' | 'ko' | 'en' | 'no-en' | 'no-ko'>('all')
   const [statusFilter, setStatusFilter] = useState<'all' | 'published' | 'draft'>('all')
   const [selectedPosts, setSelectedPosts] = useState<Set<string>>(new Set())
@@ -284,6 +294,12 @@ export function AdminPostsTable({ posts: initialPosts }: AdminPostsTableProps) {
     if (categoryFilter === 'manual' && post.youtubeVideoId !== null) return false
     if (categoryFilter === 'youtube' && post.youtubeVideoId === null) return false
 
+    // Blog filter (dev / sidehustle / unknown)
+    if (blogFilter !== 'all') {
+      const blog = getBlogLabel(post.tags).code
+      if (blog !== blogFilter) return false
+    }
+
     // Status filter
     if (statusFilter === 'published' && post.status !== 'PUBLISHED') return false
     if (statusFilter === 'draft' && post.status !== 'DRAFT') return false
@@ -339,8 +355,24 @@ export function AdminPostsTable({ posts: initialPosts }: AdminPostsTableProps) {
             </p>
           </div>
           
-          <div className="flex items-center gap-4">
-            {/* 카테고리 필터 */}
+          <div className="flex flex-wrap items-center gap-4">
+            {/* 블로그 필터 */}
+            <select
+              value={blogFilter}
+              onChange={(e) => {
+                setBlogFilter(e.target.value as any)
+                setSelectedPosts(new Set())
+              }}
+              className="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              title="블로그(카테고리)"
+            >
+              <option value="all">모든 블로그</option>
+              <option value="dev">개발막차</option>
+              <option value="sidehustle">n잡러</option>
+              <option value="unknown">미분류</option>
+            </select>
+
+            {/* 카테고리 필터 (작성 방식) */}
             <select
               value={categoryFilter}
               onChange={(e) => {
@@ -348,8 +380,9 @@ export function AdminPostsTable({ posts: initialPosts }: AdminPostsTableProps) {
                 setSelectedPosts(new Set())
               }}
               className="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              title="작성 방식"
             >
-              <option value="all">전체</option>
+              <option value="all">모든 형식</option>
               <option value="manual">직접 작성</option>
               <option value="youtube">YouTube 영상</option>
             </select>
@@ -453,6 +486,9 @@ export function AdminPostsTable({ posts: initialPosts }: AdminPostsTableProps) {
               <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                 제목
               </th>
+              <th className="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">
+                블로그
+              </th>
               <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                 <button
                   onClick={handleSort}
@@ -546,6 +582,16 @@ export function AdminPostsTable({ posts: initialPosts }: AdminPostsTableProps) {
                         클릭하여 복사
                       </span>
                     </div>
+                  </td>
+                  <td className="px-3 py-4 text-sm text-center">
+                    {(() => {
+                      const blog = getBlogLabel(post.tags)
+                      return (
+                        <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset whitespace-nowrap ${blog.cls}`}>
+                          {blog.label}
+                        </span>
+                      )
+                    })()}
                   </td>
                   <td className="px-3 py-4 text-sm text-gray-700 whitespace-nowrap tabular-nums">
                     {formatDate(post.publishedAt)}
