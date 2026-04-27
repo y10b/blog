@@ -33,6 +33,59 @@ export default function AffiliateProductsPage() {
     description: ''
   })
 
+  // 쿠팡 배너 HTML 붙여넣기 → 자동 추출용
+  const [htmlSnippet, setHtmlSnippet] = useState('')
+  const [extractMsg, setExtractMsg] = useState<{ kind: 'ok' | 'err'; text: string } | null>(null)
+
+  // <a href="..."><img src="..." alt="..."></a> 형태에서 URL / 이미지 / 상품명 추출.
+  // 쿠팡 파트너스 "이미지 배너" 위젯이 정확히 이 구조로 제공한다.
+  const handleExtractFromHtml = () => {
+    setExtractMsg(null)
+    if (!htmlSnippet.trim()) {
+      setExtractMsg({ kind: 'err', text: 'HTML을 붙여넣어주세요.' })
+      return
+    }
+
+    try {
+      const doc = new DOMParser().parseFromString(htmlSnippet, 'text/html')
+      const link = doc.querySelector('a[href]') as HTMLAnchorElement | null
+      const img = doc.querySelector('img') as HTMLImageElement | null
+
+      const url = link?.getAttribute('href')?.trim() || ''
+      const imgSrc = img?.getAttribute('src')?.trim() || ''
+      const altText = img?.getAttribute('alt')?.trim() || ''
+
+      if (!url.includes('coupang.com')) {
+        setExtractMsg({ kind: 'err', text: '쿠팡 링크를 찾을 수 없습니다. <a href="...coupang.com..."> 태그를 포함해주세요.' })
+        return
+      }
+      if (!altText) {
+        setExtractMsg({ kind: 'err', text: '상품명을 찾을 수 없습니다. <img alt="..."> 속성이 비어 있습니다.' })
+        return
+      }
+
+      // 상품명에서 핵심 단어 자동 추출 → 키워드 자리표시 (사용자가 다듬으면 됨)
+      const keywordsFromName = altText
+        .split(/[,\s]+/)
+        .map(w => w.trim())
+        .filter(w => w.length >= 2)
+        .slice(0, 6)
+        .join(', ')
+
+      setFormData(prev => ({
+        ...prev,
+        name: altText,
+        coupangUrl: url,
+        imageUrl: imgSrc || prev.imageUrl,
+        keywords: prev.keywords || keywordsFromName,
+      }))
+      setHtmlSnippet('')
+      setExtractMsg({ kind: 'ok', text: '추출 완료. 카테고리·가격·키워드를 확인하고 등록하세요.' })
+    } catch {
+      setExtractMsg({ kind: 'err', text: 'HTML 파싱에 실패했습니다.' })
+    }
+  }
+
   // Fetch products
   useEffect(() => {
     fetchProducts()
@@ -147,6 +200,8 @@ export default function AffiliateProductsPage() {
               keywords: '',
               description: ''
             })
+            setHtmlSnippet('')
+            setExtractMsg(null)
           }}
           className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700"
         >
@@ -224,6 +279,43 @@ export default function AffiliateProductsPage() {
             <h2 className="text-xl font-bold mb-4">
               {editingProduct ? '상품 수정' : '새 상품 등록'}
             </h2>
+
+            {!editingProduct && (
+              <div className="mb-5 rounded-lg border border-purple-200 bg-purple-50 p-4">
+                <label className="block text-sm font-semibold text-purple-900 mb-1">
+                  ⚡ 쿠팡 배너 HTML 붙여넣기 (자동 추출)
+                </label>
+                <p className="text-xs text-purple-700 mb-2">
+                  쿠팡 파트너스 → 광고 만들기 → 이미지 배너에서 받은 HTML 코드를 그대로 붙여넣으면
+                  상품명·링크·이미지가 자동으로 채워집니다.
+                </p>
+                <textarea
+                  value={htmlSnippet}
+                  onChange={(e) => setHtmlSnippet(e.target.value)}
+                  placeholder='<a href="https://link.coupang.com/a/..."><img src="..." alt="상품명"></a>'
+                  rows={3}
+                  className="w-full px-3 py-2 border border-purple-300 rounded-md text-xs font-mono bg-white focus:outline-none focus:ring-2 focus:ring-purple-400"
+                />
+                <div className="flex items-center justify-between mt-2 gap-2">
+                  <div className="text-xs">
+                    {extractMsg?.kind === 'ok' && (
+                      <span className="text-green-700 font-medium">✓ {extractMsg.text}</span>
+                    )}
+                    {extractMsg?.kind === 'err' && (
+                      <span className="text-red-700 font-medium">✗ {extractMsg.text}</span>
+                    )}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleExtractFromHtml}
+                    className="px-3 py-1.5 bg-purple-600 text-white rounded-md text-sm font-medium hover:bg-purple-700"
+                  >
+                    추출
+                  </button>
+                </div>
+              </div>
+            )}
+
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">상품명 *</label>
@@ -318,6 +410,8 @@ export default function AffiliateProductsPage() {
                   onClick={() => {
                     setIsFormOpen(false)
                     setEditingProduct(null)
+                    setHtmlSnippet('')
+                    setExtractMsg(null)
                   }}
                   className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
                 >
