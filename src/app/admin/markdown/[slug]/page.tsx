@@ -30,8 +30,14 @@ export default async function MarkdownViewPage({
   const enContent = enTranslation?.content
   const enTitle = enTranslation?.title
 
-  const koMd = `# ${koTitle}\n\n${koContent}`
-  const enMd = enContent ? `# ${enTitle}\n\n${enContent}` : null
+  // 커버 이미지를 마크다운 맨 앞에 ![alt](url) 형태로 prepend → 티스토리 등에 붙여넣을 때 이미지도 같이 들어간다
+  const koCover = post.coverImage
+  const enCover = enTranslation?.coverImage ?? post.coverImage
+  const koCoverMd = koCover ? `![${koTitle}](${koCover})\n\n` : ''
+  const enCoverMd = enCover ? `![${enTitle ?? koTitle}](${enCover})\n\n` : ''
+
+  const koMd = `# ${koTitle}\n\n${koCoverMd}${koContent}`
+  const enMd = enContent ? `# ${enTitle}\n\n${enCoverMd}${enContent}` : null
 
   const tistoryUrl = (post.tags?.split(',')[0] || '').trim() === 'sidehustle'
     ? 'https://nzapper-freelancer.tistory.com'
@@ -93,7 +99,12 @@ export default async function MarkdownViewPage({
           </div>
         </div>
 
-        <MarkdownCopyClient koMd={koMd} enMd={enMd} />
+        <MarkdownCopyClient
+          koMd={koMd}
+          enMd={enMd}
+          koCover={koCover}
+          enCover={enCover}
+        />
       </main>
     </div>
   )

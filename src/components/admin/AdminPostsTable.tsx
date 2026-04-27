@@ -72,12 +72,25 @@ export function AdminPostsTable({ posts: initialPosts }: AdminPostsTableProps) {
     fetchPosts()
   }, [fetchPosts])
 
+  // 날짜 기준 정렬. publishedAt이 null이면 createdAt fallback (DB 응답엔 createdAt 없으므로 0 처리).
   const handleSort = () => {
     const newOrder = sortOrder === 'asc' ? 'desc' : 'asc'
     setSortOrder(newOrder)
-    
-    const sortedPosts = [...posts].reverse()
-    setPosts(sortedPosts)
+
+    const sorted = [...posts].sort((a, b) => {
+      const ta = a.publishedAt ? new Date(a.publishedAt).getTime() : 0
+      const tb = b.publishedAt ? new Date(b.publishedAt).getTime() : 0
+      return newOrder === 'asc' ? ta - tb : tb - ta
+    })
+    setPosts(sorted)
+  }
+
+  function formatDate(d: Date | string | null): string {
+    if (!d) return '—'
+    const date = new Date(d)
+    if (Number.isNaN(date.getTime())) return '—'
+    return date.toLocaleDateString('ko-KR', { year: '2-digit', month: '2-digit', day: '2-digit' })
+      + ' ' + date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', hour12: false })
   }
 
   const handleCopyTitle = async (title: string) => {
@@ -432,17 +445,22 @@ export function AdminPostsTable({ posts: initialPosts }: AdminPostsTableProps) {
                 </th>
               )}
               <th className="sticky left-0 z-10 bg-gray-50 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 border-r">
+                #
+              </th>
+              <th className="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">
+                이미지
+              </th>
+              <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                제목
+              </th>
+              <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                 <button
                   onClick={handleSort}
                   className="group flex items-center gap-1 hover:text-indigo-600 transition-colors"
+                  title="발행일 정렬"
                 >
-                  <span>번호</span>
-                  <svg 
-                    className="w-4 h-4" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24"
-                  >
+                  <span>발행일</span>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     {sortOrder === 'asc' ? (
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
                     ) : (
@@ -450,12 +468,6 @@ export function AdminPostsTable({ posts: initialPosts }: AdminPostsTableProps) {
                     )}
                   </svg>
                 </button>
-              </th>
-              <th className="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">
-                이미지
-              </th>
-              <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                제목
               </th>
               <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                 상태
@@ -497,9 +509,16 @@ export function AdminPostsTable({ posts: initialPosts }: AdminPostsTableProps) {
                   </td>
                   <td className="px-3 py-4 text-center">
                     {post.coverImage ? (
-                      <span className="text-2xl">✅</span>
+                      <img
+                        src={post.coverImage}
+                        alt=""
+                        className="w-16 h-10 object-cover rounded border border-gray-200"
+                        loading="lazy"
+                      />
                     ) : (
-                      <span className="text-2xl">❌</span>
+                      <div className="w-16 h-10 rounded border border-dashed border-gray-300 bg-gray-50 flex items-center justify-center text-gray-400 text-xs">
+                        없음
+                      </div>
                     )}
                   </td>
                   <td className="px-3 py-4 text-sm text-gray-900">
@@ -527,6 +546,9 @@ export function AdminPostsTable({ posts: initialPosts }: AdminPostsTableProps) {
                         클릭하여 복사
                       </span>
                     </div>
+                  </td>
+                  <td className="px-3 py-4 text-sm text-gray-700 whitespace-nowrap tabular-nums">
+                    {formatDate(post.publishedAt)}
                   </td>
                   <td className="px-3 py-4 text-sm">
                     {post.status === 'PUBLISHED' ? (
